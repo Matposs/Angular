@@ -1,0 +1,51 @@
+<div class="lista">
+    <!-- <div class="item" *ngFor="let pessoa of pessoas" (click)="pessoaAtual =pessoa ">
+        {{pessoa.nomeCompleto}}
+    </div> -->
+</div>
+<mat-toolbar>
+    <span class="spann">
+        <button (click)="'/'" style="right: 75%;" id="novoCadastro" mat-flat-button color="primary">Novo Cadastro</button>
+    </span>
+    <span class="spann">
+        <button mat-flat-button color="primary" (click)="salvar()" [disabled]="form.invalid">Salvar</button>
+    </span>
+</mat-toolbar>
+<div class="divPai">
+
+    <div id="lista">
+        <mat-action-list class="lista" *ngFor="let pessoa of pessoas">
+            <mat-list-item (click)="pessoaAtual =pessoa">
+                <mat-label>{{pessoa.nomeCompleto}}</mat-label>
+                <br>
+                <mat-label>idade</mat-label>
+            </mat-list-item>
+        </mat-action-list>
+    </div>
+    <span></span>
+    <div id="cadastro" class="cadastro">
+        <form [formGroup]="form" class="form">
+
+            <mat-form-field appearance="fill">
+                <mat-label>Nome Completo:</mat-label>
+                <input matInput formControlName="nomeCompleto">
+            </mat-form-field>
+
+            <mat-form-field appearance="fill">
+                <mat-label>Data Nascimento:</mat-label>
+                <input matInput formControlName="dataNascimento">
+            </mat-form-field>
+
+            <mat-form-field appearance="fill">
+                <mat-label>CPF:</mat-label>
+                <input matInput formControlName="cpf">
+            </mat-form-field>
+
+            <mat-form-field appearance="fill">
+                <mat-label>Endereço:</mat-label>
+                <input matInput formControlName="endereco">
+            </mat-form-field>
+        </form>
+
+    </div>
+</div>

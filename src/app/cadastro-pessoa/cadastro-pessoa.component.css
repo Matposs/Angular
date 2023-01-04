@@ -1,0 +1,45 @@
+.example-button-row {
+	display: table-cell;
+	max-width: 600px;
+}
+
+.form {
+	display: flex;
+	flex-direction: column;
+	flex: auto;
+	height: auto;
+}
+
+.cadastro {
+	display: flex;
+	justify-content: end;
+}
+
+header {
+	display: flex;
+
+}
+
+.divPai {
+	display: flex;
+	flex-direction: row;
+	flex: auto;
+}
+
+.botao {
+	height: 200px;
+	width: 200px;
+}
+
+.spann {
+	display: flex;
+	flex: 50%;
+	justify-content: end;
+}
+span {
+	display: flex;
+	flex: 10%;
+}
+[hidden] {
+	display: none !important;
+  }

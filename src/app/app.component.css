@@ -1,0 +1,16 @@
+mat-sidenav {
+    width: 200px;
+
+
+}
+
+/* mat-sidenav ::ng-deep .mat-drawer-inner-container {
+    background-color: red;
+} */
+
+a {
+    background-color: cornflowerblue;
+}
+mat-sidenav {
+	background-color: whitesmoke;
+}
