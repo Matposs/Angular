@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 interface Pessoa {
   nomeCompleto?: string;
   dataNascimento?: Date;
-  idade?: string;
+  idade?: number;
   cpf?: string;
   endereco?: string;
 }
@@ -20,6 +20,8 @@ export class CadastroPessoaComponent {
     cpf: [, [Validators.required]],
     endereco: [, [Validators.required]]
   });
+  condicao : boolean = true;
+
 
   constructor(
     private readonly fb: FormBuilder,
@@ -29,9 +31,19 @@ export class CadastroPessoaComponent {
   public get pessoaAtual(): Pessoa | undefined {
     return this._pessoaAtual;
   }
-  public set pessoaAtual (value: Pessoa | undefined) {
+    set pessoaAtual (value: Pessoa | undefined) {
     this._pessoaAtual = value;
     this.form.reset(this._pessoaAtual);
+  }
+
+  Cadastro(){
+    this.form.reset();
+  }
+  getIdade() {
+    const dataHoje = new Date;
+    const data = new Date(this.form.controls['dataNascimento'].value);
+    const idade =  dataHoje.getFullYear() - data.getFullYear();
+    return idade;
   }
 
   salvar() {
@@ -41,11 +53,21 @@ export class CadastroPessoaComponent {
       Object.assign(this.pessoaAtual, this.form.getRawValue())
     } else {
       const pessoa = this.form.getRawValue();
+      pessoa.idade = this.getIdade();
       this.pessoas.push(pessoa)
     }
+    
     this.form.reset();
     this.pessoaAtual = undefined;
-    
+    this.condicao = false;
+
+  }
+  condicional () 
+  {
+    if (this.condicao == true)
+    return this.condicao = false;
+    else 
+    return this.condicao = true;
   }
 
 }

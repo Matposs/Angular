@@ -7,10 +7,10 @@
       <mat-icon>account_circle</mat-icon>
     </mat-nav-list>
     <mat-nav-list>
-      <a mat-list-item href="/">{{ "Cadastro Pessoa" }}</a>
+      <a mat-list-item  routerLinkActive= "ativo" [routerLink]="['Cadastro']">{{ "Cadastro Pessoa" }}</a>
     </mat-nav-list>
     <mat-nav-list>
-      <a mat-list-item href="/">{{ "Tarefas" }}</a>
+      <a mat-list-item routerLinkActive= "ativo" routerLink="/Tarefas">{{ "Tarefas" }} </a>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content><router-outlet></router-outlet></mat-sidenav-content>

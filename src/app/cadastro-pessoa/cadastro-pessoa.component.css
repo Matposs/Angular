@@ -12,7 +12,10 @@
 
 .cadastro {
 	display: flex;
+	width: 30%;
 	justify-content: end;
+	margin-right: 10%;
+	margin-top: 10px;
 }
 
 header {
