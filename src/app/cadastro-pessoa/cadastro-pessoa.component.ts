@@ -36,9 +36,10 @@ export class CadastroPessoaComponent {
     this.form.reset(this._pessoaAtual);
   }
 
-  Cadastro(){
-    this.form.reset();
-  }
+  // Cadastro(){
+  
+
+  // }
   getIdade() {
     const dataHoje = new Date;
     const data = new Date(this.form.controls['dataNascimento'].value);
