@@ -1,49 +1,45 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-interface Pessoa {
-  nomeCompleto?: string;
-  dataNascimento?: Date;
-  idade?: number;
-  cpf?: string;
-  endereco?: string;
-}
+import { endereco } from '../models/endereco';
+import { IPessoa } from '../models/pessoa';
+import { PessoasService } from '../services/pessoas.service';
+
 @Component({
   selector: 'app-cadastro-pessoa',
   templateUrl: './cadastro-pessoa.component.html',
   styleUrls: ['./cadastro-pessoa.component.css']
 })
+
+
 export class CadastroPessoaComponent {
-  pessoas: Pessoa[] = [];
+
+  pessoas: IPessoa[] = [];
   form: FormGroup = this.fb.group<any>({
     nomeCompleto: [, [Validators.required]],
     dataNascimento: [, [Validators.required]],
     cpf: [, [Validators.required]],
     endereco: [, [Validators.required]]
   });
-  condicao : boolean = true;
 
+  condicao: boolean = true;
 
   constructor(
-    private readonly fb: FormBuilder,
+    private readonly fb: FormBuilder, private pessoasService: PessoasService
   ) {
   }
-  private _pessoaAtual?: Pessoa | undefined;
-  public get pessoaAtual(): Pessoa | undefined {
+  private _pessoaAtual?: IPessoa | undefined;
+  public get pessoaAtual(): IPessoa | undefined {
     return this._pessoaAtual;
   }
-    set pessoaAtual (value: Pessoa | undefined) {
+  set pessoaAtual(value: IPessoa | undefined) {
     this._pessoaAtual = value;
     this.form.reset(this._pessoaAtual);
   }
 
-  // Cadastro(){
-  
-
-  // }
   getIdade() {
     const dataHoje = new Date;
     const data = new Date(this.form.controls['dataNascimento'].value);
-    const idade =  dataHoje.getFullYear() - data.getFullYear();
+    const idade = dataHoje.getFullYear() - data.getFullYear();
     return idade;
   }
 
@@ -56,19 +52,34 @@ export class CadastroPessoaComponent {
       const pessoa = this.form.getRawValue();
       pessoa.idade = this.getIdade();
       this.pessoas.push(pessoa)
+
     }
-    
+
     this.form.reset();
     this.pessoaAtual = undefined;
     this.condicao = false;
 
   }
-  condicional () 
-  {
+  condicional() {
     if (this.condicao == true)
-    return this.condicao = false;
-    else 
-    return this.condicao = true;
+      return this.condicao = false;
+    else
+      return this.condicao = true;
   }
+
+  getPessoas() {
+    this.pessoasService.getPessoas().subscribe((pessoas: IPessoa[]) => {
+      this.pessoas = pessoas;
+      return pessoas;
+    })
+  }
+  // getPessoasPorCpf () {
+  //   this.pessoasService.getPorCpf(cpf).subscribe((pessoa: IPessoa) => {
+  //     this.pessoaAtual = pessoa;
+  //     return pessoa;
+  //   })
+  // }
+
+  
 
 }

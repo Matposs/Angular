@@ -5,18 +5,24 @@
 </div>
 <mat-toolbar>
     <span class="spann" style="justify-content: start;">
-        <button (click)="condicional()" (click)="'/'" class= "novoCadastro" id="novoCadastro" mat-flat-button color="primary">Novo
-            Cadastro</button>
+        <button (click)="condicional()" (click)="'/'" class="novoCadastro" id="novoCadastro" mat-flat-button
+            color="primary">
+            Novo Cadastro</button>
+    </span>
+    <span class="spann" style="justify-content: start;">
+        <button (click)="getPessoas()" class="novoCadastro" id="novoCadastro" mat-flat-button color="primary">
+            listar</button>
     </span>
     <span class="spann">
-        <button mat-flat-button color="primary" class= "novoCadastro" (click)="salvar()" [disabled]="form.invalid">Salvar</button>
+        <button mat-flat-button color="primary" class="novoCadastro" (click)="salvar()"
+            [disabled]="form.invalid">Salvar</button>
     </span>
 </mat-toolbar>
 <div class="divPai">
 
     <div id="lista" class="lista">
         <mat-action-list *ngFor="let pessoa of pessoas" style="padding: 0;">
-            <mat-list-item class="conteudo" (click)="pessoaAtual =pessoa">
+            <mat-list-item class="conteudo" (click)="pessoaAtual = pessoa">
                 <mat-label style="font-family: Verdana, Geneva, Tahoma, sans-serif;">{{pessoa.nomeCompleto}}</mat-label>
                 <br>
                 <mat-label style="font-weight: lighter; font-style: oblique;">{{pessoa.idade}} anos</mat-label>

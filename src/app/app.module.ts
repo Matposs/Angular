@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CadastroPessoaComponent } from './cadastro-pessoa/cadastro-pessoa.component';
@@ -12,9 +11,9 @@ import { MatSidenavModule } from '@angular/material/sidenav'
 import { MatToolbarModule} from '@angular/material/toolbar'
 import { MatIconModule} from '@angular/material/icon'
 import { MatListModule} from '@angular/material/list'
-
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TarefasComponent } from './tarefas/tarefas.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -29,6 +28,7 @@ import { TarefasComponent } from './tarefas/tarefas.component';
     MatFormFieldModule,
     MatInputModule,
     FormsModule,
+    HttpClientModule,
     ReactiveFormsModule,
     MatButtonModule,
     MatSidenavModule,

@@ -4,13 +4,16 @@
 	min-width: 40%;
 	background-color: white;
 }
+
 mat-toolbar {
 	background-color: #D3D3D3;
 }
+
 .lista {
 	min-width: 40%;
 	background-color: whitesmoke;
 }
+
 .novoCadastro {
 	border-radius: 8px;
 }
@@ -57,7 +60,7 @@ header {
 	display: flex;
 	flex: 50%;
 	justify-content: end;
-	
+
 }
 
 span {
