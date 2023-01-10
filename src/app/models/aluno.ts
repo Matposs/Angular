@@ -1,4 +1,4 @@
-import { endereco } from "./endereco";
+import { IEndereco } from "./endereco";
 import { IPessoa, Pessoa } from "./pessoa";
 
 export interface IAluno extends IPessoa {

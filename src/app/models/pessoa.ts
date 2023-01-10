@@ -1,4 +1,4 @@
-import { endereco } from "./endereco";
+import { IEndereco } from "./endereco";
 
 export interface IPessoa {
     idade?: number;
@@ -6,7 +6,7 @@ export interface IPessoa {
     nome?: string;
     cpf?: string;
     dataNascimento?: Date;
-    endereco?: endereco;
+    endereco?: IEndereco;
 }
 
 export class Pessoa implements IPessoa {
@@ -15,7 +15,7 @@ export class Pessoa implements IPessoa {
     nome?: string;
     cpf?: string;
     dataNascimento?: Date;
-    endereco?: endereco;
+    endereco?: IEndereco;
     constructor(data: any) {
         this.dataNascimento = data.dataNascimento ? new Date(data.dataNascimento) : undefined;
         this.idade = this.dataNascimento ? (new Date().getUTCFullYear() - this.dataNascimento.getUTCFullYear()) : undefined;

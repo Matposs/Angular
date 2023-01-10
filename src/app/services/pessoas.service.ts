@@ -30,8 +30,6 @@ export class PessoasService {
       .pipe(map(v => v ?
         v.map(r =>
           r.this.cpf.equals(cpf) ? Pessoa : undefined) : []
-
-
       ))
 
   }

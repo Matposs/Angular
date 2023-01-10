@@ -1,47 +1,43 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { RouterLink } from '@angular/router';
-import { Aluno } from '../models/aluno';
 import { IEndereco } from '../models/endereco';
 import { IPessoa } from '../models/pessoa';
-import { AlunoService } from '../services/aluno.service';
+import { IProfessor } from '../models/professor.model';
 import { PessoasService } from '../services/pessoas.service';
+import { ProfessorService } from '../services/professor.service';
 
 @Component({
   selector: 'app-cadastro-pessoa',
-  templateUrl: './cadastro-pessoa.component.html',
-  styleUrls: ['./cadastro-pessoa.component.css']
+  templateUrl: './cadastro-professor.component.html',
+  styleUrls: ['./cadastro-professor.component.css']
 })
 
 
-export class CadastroPessoaComponent {
+export class CadastroProfessorComponent {
 
-  pessoas: IPessoa[] = [];
+  professores: IProfessor[] = [];
   form: FormGroup = this.fb.group<any>({
     nomeCompleto: [, [Validators.required]],
     dataNascimento: [, [Validators.required]],
     cpf: [, [Validators.required]],
-    uf: [,[Validators.required]],
-    logradouro: [,[Validators.required]],
-    numero: [,[Validators.required]],
-    municipio: [,[Validators.required]]
+    uf: [, [Validators.required]],
+    logradouro: [, [Validators.required]],
+    numero: [, [Validators.required]],
+    municipio: [, [Validators.required]],
+    especialidade: [, [Validators.required]]
   });
-
-
-  
-
-    constructor(
-      private readonly fb: FormBuilder, private pessoasService: PessoasService,
-      private alunoService : AlunoService
-    ) {
-    }
+  constructor(
+    private readonly fb: FormBuilder, private pessoasService: PessoasService,
+    professorService: ProfessorService
+  ) {
+  }
   condicao: boolean = true;
-  condicaoReadOnly? : boolean = false;
-  private _pessoaAtual?: IPessoa | undefined;
-  public get pessoaAtual(): IPessoa | undefined {
+  condicaoReadOnly?: boolean = false;
+  private _pessoaAtual?: IProfessor | undefined;
+  public get pessoaAtual(): IProfessor | undefined {
     return this._pessoaAtual;
   }
-  set pessoaAtual(value: IPessoa | undefined) {
+  set pessoaAtual(value: IProfessor | undefined) {
     this._pessoaAtual = value;
     this.form.reset(this._pessoaAtual);
     this.condicaoReadOnly = true;
@@ -64,20 +60,16 @@ export class CadastroPessoaComponent {
     } else {
       const pessoa = this.form.getRawValue();
       pessoa.idade = this.getIdade();
-      this.pessoas.push(pessoa)
-//ENDERECO DAR ASSIGN NO FORM <<
+      this.professores.push(pessoa)
+
     }
-    const aluno = new Aluno(undefined);
-    this.alunoService.setAluno(aluno).subscribe({
-      next: (aluno) => {
-        return aluno;
-      }});
+
     this.form.reset();
     this.pessoaAtual = undefined;
     this.condicao = false;
 
   }
-  
+
   novoCadastro() {
     this.pessoaAtual = undefined;
     this.form.reset();
@@ -93,8 +85,8 @@ export class CadastroPessoaComponent {
   }
 
   getPessoas() {
-    this.pessoasService.getPessoas().subscribe((pessoas: IPessoa[]) => {
-      this.pessoas = pessoas;
+    this.pessoasService.getPessoas().subscribe((pessoas: IProfessor[]) => {
+      this.professores = pessoas;
       return pessoas;
     })
   }
@@ -104,5 +96,7 @@ export class CadastroPessoaComponent {
   //     return pessoa;
   //   })
   // }
+
+
 
 }

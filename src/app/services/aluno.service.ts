@@ -1,5 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { data } from 'jquery';
+import { catchError, Observable } from 'rxjs';
+import { Aluno } from '../models/aluno';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +15,10 @@ export class AlunoService {
     private readonly http: HttpClient
   ) { }
 
+  public setAluno(aluno: Aluno): Observable<Aluno> {
 
+    return this.http.post<Aluno>(this.SERVER_URL + 'manter', aluno)
 
+  }
 }
+

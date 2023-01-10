@@ -5,14 +5,12 @@
 </div>
 <mat-toolbar>
     <span class="spann" style="justify-content: start;">
-        <button mat-flat-button color="primary" mat-button [matMenuTriggerFor]="menu">Cadastrar</button>
-        <mat-menu #menu="matMenu">
-          <button mat-menu-item [routerLink]="['Professor']" >Cadastrar Professor</button>
-          <button mat-menu-item [routerLink]="['Aluno']">Cadastrar Aluno</button>
-        </mat-menu>
+        <button (click)="novoCadastro()" (click)="'/'" class="novoCadastro" id="novoCadastro" mat-flat-button
+            color="primary">
+            Novo Cadastro</button>
     </span>
     <span class="spann" style="justify-content: start;">
-        <button (click)="getPessoas()" class="novoCadastro" id="novoCadastro" mat-flat-button color="primary">
+        <button (click)="getAlunos()" class="novoCadastro" id="novoCadastro" mat-flat-button color="primary">
             listar</button>
     </span>
     <span class="spann">
@@ -23,7 +21,7 @@
 <div class="divPai">
 
     <div id="lista" class="lista">
-        <mat-action-list *ngFor="let pessoa of pessoas" style="padding: 0;">
+        <mat-action-list *ngFor="let pessoa of alunos" style="padding: 0;">
             <mat-list-item class="conteudo" (click)="pessoaAtual = pessoa">
                 <mat-label style="font-family: Verdana, Geneva, Tahoma, sans-serif;">{{pessoa.nomeCompleto}}</mat-label>
                 <br>
@@ -42,8 +40,12 @@
                 <input type="date" matInput formControlName="dataNascimento">
             </mat-form-field>
             <mat-form-field appearance="fill">
-                <mat-label readonly>CPF</mat-label>
+                <mat-label readonly >CPF</mat-label>
                 <input matInput formControlName="cpf">
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+                <mat-label readonly >Número da matricula</mat-label>
+                <input matInput formControlName="matricula">
             </mat-form-field>
             <mat-form-field appearance="fill">
                 <mat-label>UF</mat-label>

@@ -1,0 +1,75 @@
+.conteudo {
+	display: block;
+	flex-direction: column;
+	min-width: 40%;
+	background-color: white;
+}
+
+mat-toolbar {
+	background-color: #D3D3D3;
+}
+
+.lista {
+	min-width: 40%;
+	background-color: whitesmoke;
+}
+
+.novoCadastro {
+	border-radius: 8px;
+}
+
+.example-button-row {
+	display: table-cell;
+	max-width: 600px;
+}
+
+.form {
+	display: flex;
+	flex-direction: column;
+	flex: auto;
+	height: auto;
+}
+
+.cadastro {
+	display: flex;
+	width: 30%;
+	justify-content: start;
+	margin-right: 10%;
+	margin-top: 10px;
+	margin-left: 10px;
+}
+
+header {
+	display: flex;
+
+}
+
+.divPai {
+	display: flex;
+	flex-direction: row;
+	flex: auto;
+	background-color: #EEEEEE;
+}
+
+.botao {
+	height: 200px;
+	width: 200px;
+}
+
+.spann {
+	display: flex;
+	flex: 50%;
+	justify-content: end;
+
+}
+
+span {
+	display: flex;
+	flex: 10%;
+}
+
+[hidden] {
+	display: none;
+}
+
+/* mat sidenav style="display: flex; justify-content: center;" */
