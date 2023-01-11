@@ -1,9 +1,10 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { Aluno } from '../models/aluno';
-import { IEndereco } from '../models/endereco';
+import { Endereco, IEndereco } from '../models/endereco';
 import { IPessoa } from '../models/pessoa';
+import { IProfessor, Professor } from '../models/professor.model';
 import { AlunoService } from '../services/aluno.service';
 import { PessoasService } from '../services/pessoas.service';
 
@@ -14,76 +15,83 @@ import { PessoasService } from '../services/pessoas.service';
 })
 
 
-export class CadastroPessoaComponent {
+export class CadastroPessoaComponent implements OnInit {
 
   pessoas: IPessoa[] = [];
+  enderecos: Endereco[] = [];
   form: FormGroup = this.fb.group<any>({
-    nomeCompleto: [, [Validators.required]],
+    nome: [, [Validators.required]],
     dataNascimento: [, [Validators.required]],
     cpf: [, [Validators.required]],
-    uf: [,[Validators.required]],
-    logradouro: [,[Validators.required]],
-    numero: [,[Validators.required]],
-    municipio: [,[Validators.required]]
+    numeroMatricula: [],
+    especialidade: []
   });
 
+  endereco: FormGroup = this.fb.group<any>({
+    uf: [, [Validators.required]],
+    logradouro: [, [Validators.required]],
+    numero: [, [Validators.required]],
+    municipio: [, [Validators.required]]
+  });
 
-  
+  conhecimentos: FormGroup = this.fb.group<any>({
+    conhecimentos: []
+  });
+  private _snackBar: any;
 
-    constructor(
-      private readonly fb: FormBuilder, private pessoasService: PessoasService,
-      private alunoService : AlunoService
-    ) {
-    }
+  constructor(
+    private readonly fb: FormBuilder, private pessoasService: PessoasService,
+    private alunoService: AlunoService
+  ) {
+  }
+  ngOnInit() {
+    this.getPessoas();
+  }
+  isProfessor: boolean = true;
   condicao: boolean = true;
-  condicaoReadOnly? : boolean = false;
+  condicaoReadOnly?: boolean = false;
   private _pessoaAtual?: IPessoa | undefined;
+  private professor?: IProfessor | undefined;
   public get pessoaAtual(): IPessoa | undefined {
     return this._pessoaAtual;
   }
   set pessoaAtual(value: IPessoa | undefined) {
     this._pessoaAtual = value;
     this.form.reset(this._pessoaAtual);
+    this.endereco.reset(this._pessoaAtual?.endereco);
+    this.conhecimentos.reset(this.professor?.conhecimentos?.map)
+    this.isProfessor = value instanceof Professor;
     this.condicaoReadOnly = true;
   }
   condicaoRead() {
     return false;
   }
-  getIdade() {
-    const dataHoje = new Date;
-    const data = new Date(this.form.controls['dataNascimento'].value);
-    const idade = dataHoje.getFullYear() - data.getFullYear();
-    return idade;
-  }
 
   salvar() {
-    if (this.form.invalid) return;
+    if (this.form.invalid && this.endereco.invalid) return;
 
     if (this.pessoaAtual) {
-      Object.assign(this.pessoaAtual, this.form.getRawValue())
-    } else {
-      const pessoa = this.form.getRawValue();
-      pessoa.idade = this.getIdade();
-      this.pessoas.push(pessoa)
-//ENDERECO DAR ASSIGN NO FORM <<
+      Object.assign(this.pessoaAtual, this.form.getRawValue());
+      Object.assign(this.pessoaAtual, this.endereco.getRawValue());
     }
-    const aluno = new Aluno(undefined);
-    this.alunoService.setAluno(aluno).subscribe({
-      next: (aluno) => {
-        return aluno;
-      }});
+    if (this.isProfessor != true) {
+      this.editarAluno(this._pessoaAtual);
+      //enviando campos do form que nao deveriam estar sendo enviados 
+      //dar um jeito de o formulario ficar invalido se o tipo for professor ou aluno
+    }
+    // else {
+    //   const pessoa = this.form.getRawValue();
+    //   const endereco = this.endereco.getRawValue();
+    //   this.pessoas.push(pessoa);
+    //   this.enderecos.push(endereco);
+    // }
+
+    this.endereco.reset();
     this.form.reset();
     this.pessoaAtual = undefined;
     this.condicao = false;
 
   }
-  
-  novoCadastro() {
-    this.pessoaAtual = undefined;
-    this.form.reset();
-    this.condicao = false;
-  }
-
 
   condicional() {
     if (this.condicao == true)
@@ -104,5 +112,17 @@ export class CadastroPessoaComponent {
   //     return pessoa;
   //   })
   // }
+
+  editarAluno(aluno) {
+    this.alunoService.alterarAluno(this.pessoaAtual!)
+      .subscribe({
+        next: () => {
+          this._snackBar.open("Cadastro concluído com sucesso!", "Ok!", {
+            horizontalPosition: "right",
+            verticalPosition: "top",
+          })
+        }
+      })
+  }
 
 }

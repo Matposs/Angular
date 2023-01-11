@@ -7,13 +7,9 @@
     <span class="spann" style="justify-content: start;">
         <button mat-flat-button color="primary" mat-button [matMenuTriggerFor]="menu">Cadastrar</button>
         <mat-menu #menu="matMenu">
-          <button mat-menu-item [routerLink]="['Professor']" >Cadastrar Professor</button>
-          <button mat-menu-item [routerLink]="['Aluno']">Cadastrar Aluno</button>
+            <button mat-menu-item [routerLink]="['Professor']">Cadastrar Professor</button>
+            <button mat-menu-item [routerLink]="['Aluno']">Cadastrar Aluno</button>
         </mat-menu>
-    </span>
-    <span class="spann" style="justify-content: start;">
-        <button (click)="getPessoas()" class="novoCadastro" id="novoCadastro" mat-flat-button color="primary">
-            listar</button>
     </span>
     <span class="spann">
         <button mat-flat-button color="primary" class="novoCadastro" (click)="salvar()"
@@ -25,26 +21,43 @@
     <div id="lista" class="lista">
         <mat-action-list *ngFor="let pessoa of pessoas" style="padding: 0;">
             <mat-list-item class="conteudo" (click)="pessoaAtual = pessoa">
-                <mat-label style="font-family: Verdana, Geneva, Tahoma, sans-serif;">{{pessoa.nomeCompleto}}</mat-label>
+                <mat-label style="font-family: Verdana, Geneva, Tahoma, sans-serif;">{{pessoa.nome}}</mat-label>
                 <br>
                 <mat-label style="font-weight: lighter; font-style: oblique;">{{pessoa.idade}} anos</mat-label>
             </mat-list-item>
         </mat-action-list>
     </div>
-    <div id="cadastro" class="cadastro" [hidden]="condicao">
+    <div id="cadastro" class="cadastro">
         <form [formGroup]="form" class="form">
             <mat-form-field appearance="fill">
                 <mat-label>Nome Completo:</mat-label>
-                <input matInput formControlName="nomeCompleto">
+                <input matInput formControlName="nome">
             </mat-form-field>
             <mat-form-field appearance="fill">
-                <mat-label>Data Nascimento:</mat-label>
-                <input type="date" matInput formControlName="dataNascimento">
+                <mat-label>Data de nascimento</mat-label>
+                <input matInput [matDatepicker]="picker" formControlName="dataNascimento">
+                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>
             <mat-form-field appearance="fill">
-                <mat-label readonly>CPF</mat-label>
+                <mat-label>CPF</mat-label>
                 <input matInput formControlName="cpf">
             </mat-form-field>
+            <ng-container *ngIf="!isProfessor">
+                <mat-form-field appearance="fill">
+                    <mat-label>Número da matrícula</mat-label>
+                    <input matInput formControlName="numeroMatricula">
+                </mat-form-field>
+            </ng-container>
+            <ng-container *ngIf="isProfessor">
+                <mat-form-field appearance="fill">
+                    <mat-label>Especialidade</mat-label>
+                    <input matInput formControlName="especialidade">
+                </mat-form-field>
+            </ng-container>
+        </form>
+
+        <form [formGroup]="endereco" class="form">
             <mat-form-field appearance="fill">
                 <mat-label>UF</mat-label>
                 <input matInput formControlName="uf">
@@ -61,6 +74,17 @@
                 <mat-label>Municipio</mat-label>
                 <input matInput formControlName="municipio">
             </mat-form-field>
+        </form>
+    </div>
+    <div class="cadastro" id="conhecimentos">
+        <form [formGroup]="conhecimentos" class="form">
+            <ng-container *ngIf="isProfessor">
+                <mat-form-field appearance="fill">
+                    <mat-label>Conhecimentos</mat-label>
+                    <input matInput formControlName="conhecimentos">
+                </mat-form-field>
+
+            </ng-container>
         </form>
     </div>
 </div>

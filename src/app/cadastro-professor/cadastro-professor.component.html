@@ -5,35 +5,21 @@
 </div>
 <mat-toolbar>
     <span class="spann" style="justify-content: start;">
-        <button (click)="novoCadastro()" (click)="'/'" class="novoCadastro" id="novoCadastro" mat-flat-button
-            color="primary">
+        <button (click)="novoCadastro()" class="novoCadastro" id="novoCadastro" mat-flat-button color="primary">
             Novo Cadastro</button>
-    </span>
-    <span class="spann" style="justify-content: start;">
-        <button (click)="getPessoas()" class="novoCadastro" id="novoCadastro" mat-flat-button color="primary">
-            listar</button>
     </span>
     <span class="spann">
         <button mat-flat-button color="primary" class="novoCadastro" (click)="salvar()"
             [disabled]="form.invalid">Salvar</button>
     </span>
 </mat-toolbar>
-<div class="divPai">
 
-    <div id="lista" class="lista">
-        <mat-action-list *ngFor="let pessoa of professores" style="padding: 0;">
-            <mat-list-item class="conteudo" (click)="pessoaAtual = pessoa">
-                <mat-label style="font-family: Verdana, Geneva, Tahoma, sans-serif;">{{pessoa.nomeCompleto}}</mat-label>
-                <br>
-                <mat-label style="font-weight: lighter; font-style: oblique;">{{pessoa.idade}} anos</mat-label>
-            </mat-list-item>
-        </mat-action-list>
-    </div>
+<div class="divPai">
     <div id="cadastro" class="cadastro" [hidden]="condicao">
         <form [formGroup]="form" class="form">
             <mat-form-field appearance="fill">
                 <mat-label>Nome Completo:</mat-label>
-                <input matInput formControlName="nomeCompleto">
+                <input matInput formControlName="nome">
             </mat-form-field>
             <mat-form-field appearance="fill">
                 <mat-label>Data Nascimento:</mat-label>
@@ -47,22 +33,25 @@
                 <mat-label readonly>Especialidade</mat-label>
                 <input matInput formControlName="especialidade">
             </mat-form-field>
-            <mat-form-field appearance="fill">
-                <mat-label>UF</mat-label>
-                <input matInput formControlName="uf">
-            </mat-form-field>
-            <mat-form-field appearance="fill">
-                <mat-label>Logradouro</mat-label>
-                <input matInput formControlName="logradouro">
-            </mat-form-field>
-            <mat-form-field appearance="fill">
-                <mat-label>Número</mat-label>
-                <input matInput formControlName="numero">
-            </mat-form-field>
-            <mat-form-field appearance="fill">
-                <mat-label>Municipio</mat-label>
-                <input matInput formControlName="municipio">
-            </mat-form-field>
+
+            <ng-container formGroupName="endereco">
+                <mat-form-field appearance="fill">
+                    <mat-label>UF</mat-label>
+                    <input matInput formControlName="uf">
+                </mat-form-field>
+                <mat-form-field appearance="fill">
+                    <mat-label>Logradouro</mat-label>
+                    <input matInput formControlName="logradouro">
+                </mat-form-field>
+                <mat-form-field appearance="fill">
+                    <mat-label>Número</mat-label>
+                    <input matInput formControlName="numero">
+                </mat-form-field>
+                <mat-form-field appearance="fill">
+                    <mat-label>Municipio</mat-label>
+                    <input matInput formControlName="municipio">
+                </mat-form-field>
+            </ng-container>
         </form>
     </div>
 </div>

@@ -18,6 +18,9 @@ import { HttpClientModule } from '@angular/common/http';
 import { CadastroAlunoComponent } from './cadastro-aluno/cadastro-aluno.component';
 import { CadastroProfessorComponent } from './cadastro-professor/cadastro-professor.component';
 import {MatMenuModule} from '@angular/material/menu'
+import {MatSnackBarModule } from '@angular/material/snack-bar'
+import {MatDatepickerModule } from '@angular/material/datepicker'
+import { MatNativeDateModule } from '@angular/material/core';
 
 @NgModule({
   declarations: [
@@ -42,7 +45,10 @@ import {MatMenuModule} from '@angular/material/menu'
     MatListModule,
     MatInputModule,
     MatSelectModule,
-    MatMenuModule
+    MatMenuModule,
+    MatSnackBarModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,10 +1,12 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Aluno, IAluno } from '../models/aluno';
-import { IEndereco } from '../models/endereco';
+import { Endereco, IEndereco } from '../models/endereco';
 import { IPessoa } from '../models/pessoa';
 import { PessoasService } from '../services/pessoas.service';
 import { AlunoService } from '../services/aluno.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-cadastro-aluno',
@@ -16,23 +18,23 @@ import { AlunoService } from '../services/aluno.service';
 export class CadastroAlunoComponent {
 
   alunos: IAluno[] = [];
+  enderecos: Endereco[] = [];
   form: FormGroup = this.fb.group<any>({
-    nomeCompleto: [, [Validators.required]],
+    nome: [, [Validators.required]],
     dataNascimento: [, [Validators.required]],
     cpf: [, [Validators.required]],
-    uf: [, [Validators.required]],
-    logradouro: [, [Validators.required]],
-    numero: [, [Validators.required]],
-    municipio: [, [Validators.required]],
-    matricula: [,[Validators.required]]
+    numeroMatricula: [, [Validators.required]],
+    endereco: {
+      uf: [, [Validators.required]],
+      logradouro: [, [Validators.required]],
+      numero: [, [Validators.required]],
+      municipio: [, [Validators.required]],
+    }
   });
-
-
-
 
   constructor(
     private readonly fb: FormBuilder, private pessoasService: PessoasService,
-    private alunoService: AlunoService
+    private alunoService: AlunoService, private _snackBar: MatSnackBar, private router: Router,
   ) {
   }
   condicao: boolean = true;
@@ -46,67 +48,36 @@ export class CadastroAlunoComponent {
     this.form.reset(this._pessoaAtual);
     this.condicaoReadOnly = true;
   }
-  condicaoRead() {
-    return false;
-  }
-  getIdade() {
-    const dataHoje = new Date;
-    const data = new Date(this.form.controls['dataNascimento'].value);
-    const idade = dataHoje.getFullYear() - data.getFullYear();
-    return idade;
-  }
-
   salvar() {
-    if (this.form.invalid) return;
 
     if (this.pessoaAtual) {
       Object.assign(this.pessoaAtual, this.form.getRawValue())
-    } else {
+      this._snackBar.open("Cadastro concluído com sucesso!", "Ok!", {
+        horizontalPosition: "right",
+        verticalPosition: "top",
+      });
+    }
+    else {
       const pessoa = this.form.getRawValue();
-      pessoa.idade = this.getIdade();
-      this.alunos.push(pessoa);
       this.alunoService.setAluno(pessoa).subscribe({
-        next: (aluno) => {
-          return aluno;
+        next: () => {
+          this._snackBar.open("Cadastro concluído com sucesso!", "Ok!", {
+            horizontalPosition: "right",
+            verticalPosition: "top",
+          });
         }
       })
     }
-
     this.form.reset();
     this.pessoaAtual = undefined;
     this.condicao = false;
-  
-
-    }
+    this.router.navigate(["Cadastro"]);
+  }
 
   novoCadastro() {
     this.pessoaAtual = undefined;
     this.form.reset();
     this.condicao = false;
   }
-
-
-  condicional() {
-    if (this.condicao == true)
-      return this.condicao = false;
-    else
-      return this.condicao = true;
-  }
-
-  getAlunos() {
-    this.pessoasService.getPessoas().subscribe((pessoas: IAluno[]) => {
-      this.alunos = pessoas;
-      return pessoas;
-    })
-  }
-
-  // getPessoasPorCpf () {
-  //   this.pessoasService.getPorCpf(cpf).subscribe((pessoa: IPessoa) => {
-  //     this.pessoaAtual = pessoa;
-  //     return pessoa;
-  //   })
-  // }
-
-
 
 }
