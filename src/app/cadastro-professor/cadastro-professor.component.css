@@ -32,6 +32,7 @@ mat-toolbar {
 
 .cadastro {
 	display: flex;
+	flex-direction: column;
 	width: 30%;
 	justify-content: start;
 	margin-right: 10%;
@@ -71,5 +72,6 @@ span {
 [hidden] {
 	display: none;
 }
+
 
 /* mat sidenav style="display: flex; justify-content: center;" */

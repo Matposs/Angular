@@ -15,7 +15,7 @@
 </mat-toolbar>
 
 <div class="divPai">
-    <div id="cadastro" class="cadastro" [hidden]="condicao">
+    <div id="cadastro" class="cadastro">
         <form [formGroup]="form" class="form">
             <mat-form-field appearance="fill">
                 <mat-label>Nome Completo:</mat-label>
@@ -33,25 +33,50 @@
                 <mat-label readonly>Especialidade</mat-label>
                 <input matInput formControlName="especialidade">
             </mat-form-field>
+        </form>
+        <form [formGroup]="endereco" class="form">
+            <mat-form-field appearance="fill">
+                <mat-label>UF</mat-label>
+                <input matInput formControlName="uf">
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+                <mat-label>Logradouro</mat-label>
+                <input matInput formControlName="logradouro">
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+                <mat-label>Número</mat-label>
+                <input matInput formControlName="numero">
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+                <mat-label>Municipio</mat-label>
+                <input matInput formControlName="municipio">
+            </mat-form-field>
+        </form>
+    </div>
+    <div class="cadastro" id="conhecimentos">
+        <form class="form" [formGroup]="conhecimento">
+            <ng-container>
+                <mat-form-field appearance="fill">
+                    <mat-label>Conhecimento</mat-label>
+                    <input matInput (keydown.enter)="adicionarConhecimentos();$event.preventDefault() " formControlName="conhecimento">
 
-            <ng-container formGroupName="endereco">
-                <mat-form-field appearance="fill">
-                    <mat-label>UF</mat-label>
-                    <input matInput formControlName="uf">
                 </mat-form-field>
-                <mat-form-field appearance="fill">
-                    <mat-label>Logradouro</mat-label>
-                    <input matInput formControlName="logradouro">
-                </mat-form-field>
-                <mat-form-field appearance="fill">
-                    <mat-label>Número</mat-label>
-                    <input matInput formControlName="numero">
-                </mat-form-field>
-                <mat-form-field appearance="fill">
-                    <mat-label>Municipio</mat-label>
-                    <input matInput formControlName="municipio">
-                </mat-form-field>
+            </ng-container>
+            <ng-container *ngFor="let c of conhecimentos">
+                <div style="display: flex">
+                    <span style="flex: auto;">{{c}}</span>
+                    <button tabindex="-1" mat-icon-button (click)="deletarConhecimento(c)">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </div>
             </ng-container>
         </form>
     </div>
-</div>
+
+    <!-- <button mat-fab color="primary" aria-label="Example icon button with a delete icon">
+        <mat-icon>delete</mat-icon>
+    </button>
+    <button mat-mini-fab color="accent"
+        aria-label="Example icon button with a plus one icon">
+        <mat-icon>plus_one</mat-icon>
+    </button> -->

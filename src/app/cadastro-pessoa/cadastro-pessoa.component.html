@@ -23,7 +23,8 @@
             <mat-list-item class="conteudo" (click)="pessoaAtual = pessoa">
                 <mat-label style="font-family: Verdana, Geneva, Tahoma, sans-serif;">{{pessoa.nome}}</mat-label>
                 <br>
-                <mat-label style="font-weight: lighter; font-style: oblique;">{{pessoa.idade}} anos</mat-label>
+                <mat-label style="font-weight: lighter; font-style: oblique;">{{getIdade(pessoa.dataNascimento)}}
+                    anos</mat-label>
             </mat-list-item>
         </mat-action-list>
     </div>
@@ -77,13 +78,25 @@
         </form>
     </div>
     <div class="cadastro" id="conhecimentos">
-        <form [formGroup]="conhecimentos" class="form">
+        <form class="form" [formGroup]="conhecimento">
             <ng-container *ngIf="isProfessor">
-                <mat-form-field appearance="fill">
-                    <mat-label>Conhecimentos</mat-label>
-                    <input matInput formControlName="conhecimentos">
-                </mat-form-field>
-
+                <mat-expansion-panel hideToggle>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            Conhecimentos
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <ng-container *ngFor="let conhecimento of conhecimentos">
+                        <mat-label>
+                            <button mat-fab color="primary" aria-label="Example icon button with a delete icon">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                            <button mat-mini-fab color="accent" aria-label="Example icon button with a plus one icon">
+                                <mat-icon>plus_one</mat-icon>
+                            </button>
+                        </mat-label>
+                    </ng-container>
+                </mat-expansion-panel>
             </ng-container>
         </form>
     </div>

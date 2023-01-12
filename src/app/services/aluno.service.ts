@@ -21,8 +21,8 @@ export class AlunoService {
 
   }
 
-  public alterarAluno(aluno: Aluno)  {
-   return this.http.patch <Aluno>(this.SERVER_URL + 'alterar', aluno)
+  public alterarAluno(aluno: Aluno) {
+    return this.http.post<Aluno>(this.SERVER_URL + 'alterar', aluno)
   }
 }
 

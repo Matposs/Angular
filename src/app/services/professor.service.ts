@@ -19,7 +19,7 @@ export class ProfessorService {
   }
 
   public alterarProfessor(professor: Professor)  {
-    return this.http.patch <Professor>(this.SERVER_URL + 'alterar', professor)
+    return this.http.post <Professor>(this.SERVER_URL + 'alterar', professor)
    }
 
 

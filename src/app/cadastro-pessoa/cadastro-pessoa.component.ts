@@ -1,12 +1,15 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { Aluno } from '../models/aluno';
+import { Aluno, IAluno } from '../models/aluno';
 import { Endereco, IEndereco } from '../models/endereco';
 import { IPessoa } from '../models/pessoa';
 import { IProfessor, Professor } from '../models/professor.model';
 import { AlunoService } from '../services/aluno.service';
 import { PessoasService } from '../services/pessoas.service';
+import { ProfessorService } from '../services/professor.service';
+import {COMMA, ENTER} from '@angular/cdk/keycodes';
+import { MatChipEditedEvent, MatChipInputEvent } from '@angular/material/chips';
 
 @Component({
   selector: 'app-cadastro-pessoa',
@@ -18,6 +21,7 @@ import { PessoasService } from '../services/pessoas.service';
 export class CadastroPessoaComponent implements OnInit {
 
   pessoas: IPessoa[] = [];
+  conhecimentos? : String [];
   enderecos: Endereco[] = [];
   form: FormGroup = this.fb.group<any>({
     nome: [, [Validators.required]],
@@ -34,14 +38,18 @@ export class CadastroPessoaComponent implements OnInit {
     municipio: [, [Validators.required]]
   });
 
-  conhecimentos: FormGroup = this.fb.group<any>({
-    conhecimentos: []
+  conhecimento: FormGroup = this.fb.group<any>({
+    conhecimento : []
   });
+
+  // conhecimentos: FormGroup = this.fb.group<any>({
+  //   conhecimentos: []
+  // });
   private _snackBar: any;
 
   constructor(
     private readonly fb: FormBuilder, private pessoasService: PessoasService,
-    private alunoService: AlunoService
+    private alunoService: AlunoService, private professorService: ProfessorService
   ) {
   }
   ngOnInit() {
@@ -52,6 +60,7 @@ export class CadastroPessoaComponent implements OnInit {
   condicaoReadOnly?: boolean = false;
   private _pessoaAtual?: IPessoa | undefined;
   private professor?: IProfessor | undefined;
+  private aluno?: Aluno | undefined;
   public get pessoaAtual(): IPessoa | undefined {
     return this._pessoaAtual;
   }
@@ -59,7 +68,7 @@ export class CadastroPessoaComponent implements OnInit {
     this._pessoaAtual = value;
     this.form.reset(this._pessoaAtual);
     this.endereco.reset(this._pessoaAtual?.endereco);
-    this.conhecimentos.reset(this.professor?.conhecimentos?.map)
+    this.conhecimento.reset(this.professor?.conhecimentos);
     this.isProfessor = value instanceof Professor;
     this.condicaoReadOnly = true;
   }
@@ -68,29 +77,35 @@ export class CadastroPessoaComponent implements OnInit {
   }
 
   salvar() {
-    if (this.form.invalid && this.endereco.invalid) return;
+    this.aluno = this.pessoaAtual;
+    this.professor = this._pessoaAtual;
+    if (this.form.invalid) return;
 
-    if (this.pessoaAtual) {
-      Object.assign(this.pessoaAtual, this.form.getRawValue());
-      Object.assign(this.pessoaAtual, this.endereco.getRawValue());
+    if (this.pessoaAtual && this.isProfessor == true && this.professor?.endereco && this.professor?.conhecimentos) {
+      if (this.professor) {
+        Object.assign(this.professor, this.form.getRawValue());
+        Object.assign(this.professor.endereco, this.endereco.getRawValue());
+        Object.assign(this.professor.conhecimentos, this.conhecimento.getRawValue());
+        this.editarProfessor(this.professor);
+      }
     }
-    if (this.isProfessor != true) {
-      this.editarAluno(this._pessoaAtual);
-      //enviando campos do form que nao deveriam estar sendo enviados 
-      //dar um jeito de o formulario ficar invalido se o tipo for professor ou aluno
+    if (this.pessoaAtual && this.isProfessor != true) {
+      if (this.aluno && this.aluno.endereco) {
+        Object.assign(this.aluno, this.form.getRawValue());
+        Object.assign(this.aluno.endereco, this.endereco.getRawValue());
+        this.editarAluno(this.aluno);
+      }
     }
-    // else {
-    //   const pessoa = this.form.getRawValue();
-    //   const endereco = this.endereco.getRawValue();
-    //   this.pessoas.push(pessoa);
-    //   this.enderecos.push(endereco);
-    // }
-
     this.endereco.reset();
     this.form.reset();
     this.pessoaAtual = undefined;
-    this.condicao = false;
 
+  }
+
+  getIdade(dataNascimento) {
+    const idade = dataNascimento ? (new Date().getUTCFullYear() -
+      dataNascimento.getUTCFullYear()) : undefined;
+    return idade;
   }
 
   condicional() {
@@ -113,11 +128,22 @@ export class CadastroPessoaComponent implements OnInit {
   //   })
   // }
 
-  editarAluno(aluno) {
-    this.alunoService.alterarAluno(this.pessoaAtual!)
+  editarAluno(aluno: Aluno) {
+    this.alunoService.alterarAluno(aluno)
       .subscribe({
         next: () => {
-          this._snackBar.open("Cadastro concluído com sucesso!", "Ok!", {
+          this._snackBar.open("Alteração concluída com sucesso!", "Ok!", {
+            horizontalPosition: "right",
+            verticalPosition: "top",
+          })
+        }
+      })
+  }
+  editarProfessor(professor: Professor) {
+    this.professorService.alterarProfessor(professor)
+      .subscribe({
+        next: () => {
+          this._snackBar.open("Alteração concluída com sucesso!", "Ok!", {
             horizontalPosition: "right",
             verticalPosition: "top",
           })
@@ -125,4 +151,4 @@ export class CadastroPessoaComponent implements OnInit {
       })
   }
 
-}
+  }

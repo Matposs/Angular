@@ -2,10 +2,6 @@ import { IEndereco } from "./endereco";
 import { IPessoa, Pessoa } from "./pessoa";
 
 export interface IAluno extends IPessoa {
-    // cpf?: string;
-    // dataNascimento?: Date;
-    // endereco?: endereco;
-    // nome?: string;
     numeroMatricula?: string;
 }
 //serializar
