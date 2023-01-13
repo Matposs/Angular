@@ -150,5 +150,16 @@ export class CadastroPessoaComponent implements OnInit {
         }
       })
   }
+  adicionarConhecimentos() {
+    this.conhecimentos?.push(this.conhecimento.controls['conhecimento'].value);
+    this.conhecimento.reset();
+  }
+
+  deletarConhecimento(conhecimento: String) {
+    const pos = this.conhecimentos?.indexOf(conhecimento);
+    if (pos && pos > -1) this.conhecimentos?.splice(pos, 1);
+    this.conhecimento.reset();
+  }
+
 
   }

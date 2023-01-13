@@ -64,7 +64,7 @@
             </ng-container>
             <ng-container *ngFor="let c of conhecimentos">
                 <div style="display: flex">
-                    <span style="flex: auto;">{{c}}</span>
+                    <span style="flex: auto; align-self: center; background-color: snow;">{{c}}</span>
                     <button tabindex="-1" mat-icon-button (click)="deletarConhecimento(c)">
                         <mat-icon>delete</mat-icon>
                     </button>

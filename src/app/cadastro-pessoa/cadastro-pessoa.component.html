@@ -25,6 +25,9 @@
                 <br>
                 <mat-label style="font-weight: lighter; font-style: oblique;">{{getIdade(pessoa.dataNascimento)}}
                     anos</mat-label>
+                    <!-- <button (click)="apagarpessoa">
+                      <mat-icon>delete</mat-icon>
+                    </button> -->
             </mat-list-item>
         </mat-action-list>
     </div>
@@ -78,26 +81,22 @@
         </form>
     </div>
     <div class="cadastro" id="conhecimentos">
-        <form class="form" [formGroup]="conhecimento">
-            <ng-container *ngIf="isProfessor">
-                <mat-expansion-panel hideToggle>
-                    <mat-expansion-panel-header>
-                        <mat-panel-title>
-                            Conhecimentos
-                        </mat-panel-title>
-                    </mat-expansion-panel-header>
-                    <ng-container *ngFor="let conhecimento of conhecimentos">
-                        <mat-label>
-                            <button mat-fab color="primary" aria-label="Example icon button with a delete icon">
-                                <mat-icon>delete</mat-icon>
-                            </button>
-                            <button mat-mini-fab color="accent" aria-label="Example icon button with a plus one icon">
-                                <mat-icon>plus_one</mat-icon>
-                            </button>
-                        </mat-label>
-                    </ng-container>
-                </mat-expansion-panel>
-            </ng-container>
-        </form>
-    </div>
+      <form class="form" [formGroup]="conhecimento">
+          <ng-container>
+              <mat-form-field appearance="fill">
+                  <mat-label>Conhecimento</mat-label>
+                  <input matInput (keydown.enter)="adicionarConhecimentos();$event.preventDefault() " formControlName="conhecimento">
+
+              </mat-form-field>
+          </ng-container>
+          <ng-container *ngFor="let c of conhecimentos">
+              <div style="display: flex">
+                  <span style="flex: auto; align-self: center; background-color: snow;">{{c}}</span>
+                  <button tabindex="-1" mat-icon-button (click)="deletarConhecimento(c)">
+                      <mat-icon>delete</mat-icon>
+                  </button>
+              </div>
+          </ng-container>
+      </form>
+  </div>
 </div>
