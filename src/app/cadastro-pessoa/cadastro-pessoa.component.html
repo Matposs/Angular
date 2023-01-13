@@ -1,8 +1,3 @@
-<div class="lista">
-    <!-- <div class="item" *ngFor="let pessoa of pessoas" (click)="pessoaAtual =pessoa ">
-        {{pessoa.nomeCompleto}}
-    </div> -->
-</div>
 <mat-toolbar>
     <span class="spann" style="justify-content: start;">
         <button mat-flat-button color="primary" mat-button [matMenuTriggerFor]="menu">Cadastrar</button>
@@ -19,44 +14,48 @@
 <div class="divPai">
 
     <div id="lista" class="lista">
-        <mat-action-list *ngFor="let pessoa of pessoas" style="padding: 0;">
+        <mat-action-list *ngFor="let pessoa of pessoas" style="padding: 0; display: flex; background-color: white;">
             <mat-list-item class="conteudo" (click)="pessoaAtual = pessoa">
-                <mat-label style="font-family: Verdana, Geneva, Tahoma, sans-serif;">{{pessoa.nome}}</mat-label>
-                <br>
-                <mat-label style="font-weight: lighter; font-style: oblique;">{{getIdade(pessoa.dataNascimento)}}
-                    anos</mat-label>
-                    <!-- <button (click)="apagarpessoa">
-                      <mat-icon>delete</mat-icon>
-                    </button> -->
+                <span style="display: block;">
+                    <mat-label style="font-family: Verdana, Geneva, Tahoma, sans-serif;">{{pessoa.nome}}
+                    </mat-label>
+                    <br>
+                    <mat-label style="font-weight: lighter; font-style: oblique;">{{getIdade(pessoa.dataNascimento)}}
+                        anos</mat-label>
+                </span>
             </mat-list-item>
+            <button mat-icon-button (click)="excluirPessoa(pessoa)">
+                <mat-icon>delete</mat-icon>
+            </button>
         </mat-action-list>
     </div>
     <div id="cadastro" class="cadastro">
         <form [formGroup]="form" class="form">
             <mat-form-field appearance="fill">
                 <mat-label>Nome Completo:</mat-label>
-                <input matInput formControlName="nome">
+                <input matInput formControlName="nome" minlength="10" maxlength="100">
             </mat-form-field>
             <mat-form-field appearance="fill">
                 <mat-label>Data de nascimento</mat-label>
-                <input matInput [matDatepicker]="picker" formControlName="dataNascimento">
+                <input matInput [matDatepicker]="picker" formControlName="dataNascimento" min="01/01/2022"
+                    max="01/01/1920">
                 <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>
             <mat-form-field appearance="fill">
                 <mat-label>CPF</mat-label>
-                <input matInput formControlName="cpf">
+                <input matInput formControlName="cpf" minlength="11" maxlength="11" [readonly]="pessoaAtual !== undefined">
             </mat-form-field>
             <ng-container *ngIf="!isProfessor">
                 <mat-form-field appearance="fill">
                     <mat-label>Número da matrícula</mat-label>
-                    <input matInput formControlName="numeroMatricula">
+                    <input matInput formControlName="numeroMatricula" minlength="1" maxlength="50">
                 </mat-form-field>
             </ng-container>
             <ng-container *ngIf="isProfessor">
                 <mat-form-field appearance="fill">
                     <mat-label>Especialidade</mat-label>
-                    <input matInput formControlName="especialidade">
+                    <input matInput formControlName="especialidade" minlength="1" maxlength="50">
                 </mat-form-field>
             </ng-container>
         </form>
@@ -64,39 +63,41 @@
         <form [formGroup]="endereco" class="form">
             <mat-form-field appearance="fill">
                 <mat-label>UF</mat-label>
-                <input matInput formControlName="uf">
+                <input maxlength="2" matInput formControlName="uf">
             </mat-form-field>
             <mat-form-field appearance="fill">
                 <mat-label>Logradouro</mat-label>
-                <input matInput formControlName="logradouro">
+                <input matInput formControlName="logradouro" maxlength="100">
             </mat-form-field>
             <mat-form-field appearance="fill">
                 <mat-label>Número</mat-label>
-                <input matInput formControlName="numero">
+                <input matInput formControlName="numero" maxlength="20">
             </mat-form-field>
             <mat-form-field appearance="fill">
                 <mat-label>Municipio</mat-label>
-                <input matInput formControlName="municipio">
+                <input matInput formControlName="municipio" maxlength="100">
             </mat-form-field>
         </form>
     </div>
     <div class="cadastro" id="conhecimentos">
-      <form class="form" [formGroup]="conhecimento">
-          <ng-container>
-              <mat-form-field appearance="fill">
-                  <mat-label>Conhecimento</mat-label>
-                  <input matInput (keydown.enter)="adicionarConhecimentos();$event.preventDefault() " formControlName="conhecimento">
-
-              </mat-form-field>
-          </ng-container>
-          <ng-container *ngFor="let c of conhecimentos">
-              <div style="display: flex">
-                  <span style="flex: auto; align-self: center; background-color: snow;">{{c}}</span>
-                  <button tabindex="-1" mat-icon-button (click)="deletarConhecimento(c)">
-                      <mat-icon>delete</mat-icon>
-                  </button>
-              </div>
-          </ng-container>
-      </form>
-  </div>
+        <form class="form" [formGroup]="conhecimento" style="margin-left: auto; margin-right: auto;">
+            <ng-container *ngIf="isProfessor">
+                <mat-form-field appearance="fill">
+                    <mat-label>Conhecimento</mat-label>
+                    <input matInput (keydown.enter)="adicionarConhecimentos();$event.preventDefault() "
+                        formControlName="conhecimento">
+                </mat-form-field>
+            </ng-container>
+            <ng-container *ngIf="isProfessor">
+                <ng-container *ngFor="let c of professor?.conhecimentos">
+                    <div class="conhecimentos" style="align-items: center;">
+                        <span class="listaConhecimentos">{{c}}</span>
+                        <button tabindex="-1" mat-icon-button (click)="deletarConhecimento(c)">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </div>
+                </ng-container>
+            </ng-container>
+        </form>
+    </div>
 </div>

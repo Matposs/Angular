@@ -73,5 +73,15 @@ span {
 	display: none;
 }
 
+.conhecimentos {
+	display: flex;
+	background-color: white;
+	padding-left: 10px;
+	margin-bottom: 4px;
+	box-shadow: 3px 4px grey;
+}
 
-/* mat sidenav style="display: flex; justify-content: center;" */
+.listaConhecimentos {
+	flex: 10%;
+
+}

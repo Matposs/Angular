@@ -31,7 +31,10 @@ export class PessoasService {
         v.map(r =>
           r.this.cpf.equals(cpf) ? Pessoa : undefined) : []
       ))
+  }
 
+  public deletarPessoa(pessoa: IPessoa): Observable<Pessoa> {
+    return this.http.post<Pessoa>(this.SERVER_URL + 'excluir', pessoa)
   }
 
 

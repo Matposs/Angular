@@ -17,6 +17,7 @@ import { ProfessorService } from '../services/professor.service';
 
 export class CadastroProfessorComponent {
 
+  pessoas: IPessoa[] = [];
   professores: IProfessor[] = [];
   enderecos: Endereco[] = [];
   conhecimentos: String[] = [];
@@ -43,62 +44,65 @@ export class CadastroProfessorComponent {
     private professorService: ProfessorService, private _snackBar: MatSnackBar, private router: Router,
   ) {
   }
+  isProfessor: boolean = true;
   condicao: boolean = true;
   condicaoReadOnly?: boolean = false;
-  private _pessoaAtual?: IProfessor | undefined;
   private professor?: IProfessor | undefined;
-  public get pessoaAtual(): IProfessor | undefined {
-    return this._pessoaAtual;
-  }
-  set pessoaAtual(value: IProfessor | undefined) {
-    this._pessoaAtual = value;
-    this.form.reset(this._pessoaAtual);
-    this.endereco.reset(this._pessoaAtual?.endereco);
-    this.conhecimento.reset(this.professor?.conhecimentos);
-    this.condicaoReadOnly = true;
-  }
-  salvar() {
 
-    if (this.pessoaAtual) {
-      Object.assign(this.pessoaAtual, this.form.getRawValue())
-      this._snackBar.open("Cadastro concluído com sucesso!", "Ok!", {
-        horizontalPosition: "right",
-        verticalPosition: "top",
-      });
-    }
-    else {
-      const pessoa = this.form.getRawValue();
-      this.professores.push(pessoa);
-      this.professorService.setProfessor(pessoa).subscribe({
+  set prof(value: IProfessor | undefined) {
+    this.professor = value;
+    this.form.reset(this.professor);
+    this.endereco.reset(this.professor?.endereco);
+    this.conhecimento.reset(this.professor?.conhecimentos);
+  }
+
+  public get prof(): IProfessor | undefined {
+    return this.professor;
+  }
+
+  ngOnInit() {
+    this.novoCadastro();
+  }
+
+  salvar() {
+    if (this.professor) {
+      Object.assign(this.professor, this.form.getRawValue());
+      if (this.professor.endereco) {
+        Object.assign(this.professor.endereco, this.endereco.getRawValue());
+      } else {
+        this.professor.endereco = new Endereco(this.endereco.getRawValue());
+      }
+      if (this.professor.conhecimentos) {
+        Object.assign(this.professor.conhecimentos, this.conhecimentos);
+      } else {
+        this.professor.conhecimentos = this.conhecimentos as string[];
+      }
+      this.professorService.setProfessor(this.professor).subscribe({
         next: () => {
           this._snackBar.open("Cadastro concluído com sucesso!", "Ok!", {
             horizontalPosition: "right",
             verticalPosition: "top",
-
           });
         }
       })
     }
-    this.form.reset();
-    this.pessoaAtual = undefined;
-    this.condicao = false;
     this.router.navigate(["Cadastro"]);
   }
 
   novoCadastro() {
-    this.pessoaAtual = undefined;
+    this.professor = new Professor({ conhecimentos: [] });
     this.form.reset();
     this.condicao = false;
   }
 
   adicionarConhecimentos() {
-    this.conhecimentos.push(this.conhecimento.controls['conhecimento'].value);
+    this.conhecimentos?.push(this.conhecimento.controls['conhecimento'].value);
     this.conhecimento.reset();
   }
 
   deletarConhecimento(conhecimento: String) {
-    const pos = this.conhecimentos.indexOf(conhecimento);
-    if (pos > -1) this.conhecimentos.splice(pos, 1);
+    const pos = this.conhecimentos?.indexOf(conhecimento);
+    if (pos && pos > -1) this.conhecimentos?.splice(pos, 1);
     this.conhecimento.reset();
   }
 

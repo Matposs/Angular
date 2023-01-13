@@ -12,6 +12,8 @@ mat-toolbar {
 .lista {
 	min-width: 40%;
 	background-color: whitesmoke;
+	overflow: auto;
+	height: calc(100vh - 70px);
 }
 
 .novoCadastro {
@@ -26,7 +28,6 @@ mat-toolbar {
 .form {
 	display: flex;
 	flex-direction: column;
-	flex: auto;
 	height: auto;
 }
 
@@ -35,7 +36,7 @@ mat-toolbar {
 	flex-direction: column;
 	width: 30%;
 	justify-content: start;
-	margin-right: 10%;
+	margin-right: auto;
 	margin-top: 10px;
 	margin-left: 10px;
 }
@@ -72,5 +73,15 @@ span {
 [hidden] {
 	display: none;
 }
+.conhecimentos {
+    display: flex;
+    background-color: white;
+    padding-left: 10px;
+	margin-bottom: 4px;
+    box-shadow: 3px 4px grey;
+}
+.listaConhecimentos 
+{
+	flex: 10%;
 
-/* mat sidenav style="display: flex; justify-content: center;" */
+}

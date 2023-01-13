@@ -11,6 +11,14 @@ mat-nav-list {
     padding: 4px 0;
 }
 
+
+
+.listaConhecimentos {
+    flex: auto;
+    align-self: center;
+    background-color: white;
+}
+
 .icone {
     border-radius: 140px;
     width: 120px;
@@ -24,15 +32,17 @@ a[mat-list-item] {
     border: solid 1px cornflowerblue;
     border-radius: 8px;
     background-color: transparent;
+
     span {
 
         color: cornflowerblue;
     }
 
-    &.ativo{
+    &.ativo {
         background-color: cornflowerblue;
+
         span {
-            
+
             color: azure;
         }
     }

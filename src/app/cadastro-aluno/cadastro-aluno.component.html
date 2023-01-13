@@ -5,8 +5,8 @@
 </div>
 <mat-toolbar>
     <span class="spann" style="justify-content: start;">
-        <button (click)="novoCadastro()" class="novoCadastro" id="novoCadastro" mat-flat-button color="primary">
-            Novo Cadastro</button>
+        <button [routerLink]="['/Cadastro']" class="novoCadastro" id="novoCadastro" mat-flat-button color="primary">
+            Lista</button>
     </span>
 
     <span class="spann">
@@ -22,40 +22,38 @@
         <form [formGroup]="form" class="form">
             <mat-form-field appearance="fill">
                 <mat-label>Nome Completo:</mat-label>
-                <input matInput formControlName="nome">
+                <input matInput formControlName="nome" minlength="10" maxlength="100">
             </mat-form-field>
             <mat-form-field appearance="fill">
                 <mat-label>Data Nascimento:</mat-label>
-                <input type="date" matInput formControlName="dataNascimento">
+                <input type="date" matInput formControlName="dataNascimento" min="01/01/2022" max="01/01/1920">
             </mat-form-field>
             <mat-form-field appearance="fill">
                 <mat-label readonly>CPF</mat-label>
-                <input matInput formControlName="cpf">
+                <input matInput formControlName="cpf" minlength="11" maxlength="11">
             </mat-form-field>
             <mat-form-field appearance="fill">
                 <mat-label readonly>Número da matricula</mat-label>
-                <input matInput formControlName="numeroMatricula">
+                <input matInput formControlName="numeroMatricula" minlength="1" maxlength="50">
             </mat-form-field>
-
-            <ng-container formGroupName="endereco">
-                <mat-form-field appearance="fill">
-                    <mat-label>UF</mat-label>
-                    <input matInput formControlName="uf">
-                </mat-form-field>
-                <mat-form-field appearance="fill">
-                    <mat-label>Logradouro</mat-label>
-                    <input matInput formControlName="logradouro">
-                </mat-form-field>
-                <mat-form-field appearance="fill">
-                    <mat-label>Número</mat-label>
-                    <input matInput formControlName="numero">
-                </mat-form-field>
-                <mat-form-field appearance="fill">
-                    <mat-label>Municipio</mat-label>
-                    <input matInput formControlName="municipio">
-                </mat-form-field>
-            </ng-container>
-
+        </form>
+        <form [formGroup]="endereco" class="form">
+            <mat-form-field appearance="fill">
+                <mat-label>UF</mat-label>
+                <input matInput formControlName="uf" maxlength="2">
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+                <mat-label>Logradouro</mat-label>
+                <input matInput formControlName="logradouro" maxlength="100">
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+                <mat-label>Número</mat-label>
+                <input matInput formControlName="numero" maxlength="20">
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+                <mat-label>Municipio</mat-label>
+                <input matInput formControlName="municipio" maxlength="100">
+            </mat-form-field>
         </form>
     </div>
 </div>

@@ -8,8 +8,9 @@ import { IProfessor, Professor } from '../models/professor.model';
 import { AlunoService } from '../services/aluno.service';
 import { PessoasService } from '../services/pessoas.service';
 import { ProfessorService } from '../services/professor.service';
-import {COMMA, ENTER} from '@angular/cdk/keycodes';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatChipEditedEvent, MatChipInputEvent } from '@angular/material/chips';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-cadastro-pessoa',
@@ -21,7 +22,7 @@ import { MatChipEditedEvent, MatChipInputEvent } from '@angular/material/chips';
 export class CadastroPessoaComponent implements OnInit {
 
   pessoas: IPessoa[] = [];
-  conhecimentos? : String [];
+  conhecimentos?: String[];
   enderecos: Endereco[] = [];
   form: FormGroup = this.fb.group<any>({
     nome: [, [Validators.required]],
@@ -39,19 +40,14 @@ export class CadastroPessoaComponent implements OnInit {
   });
 
   conhecimento: FormGroup = this.fb.group<any>({
-    conhecimento : []
+    conhecimento: []
   });
-
-  // conhecimentos: FormGroup = this.fb.group<any>({
-  //   conhecimentos: []
-  // });
-  private _snackBar: any;
 
   constructor(
     private readonly fb: FormBuilder, private pessoasService: PessoasService,
-    private alunoService: AlunoService, private professorService: ProfessorService
-  ) {
-  }
+    private alunoService: AlunoService, private professorService: ProfessorService,
+    private _snackBar: MatSnackBar,) { }
+
   ngOnInit() {
     this.getPessoas();
   }
@@ -59,7 +55,7 @@ export class CadastroPessoaComponent implements OnInit {
   condicao: boolean = true;
   condicaoReadOnly?: boolean = false;
   private _pessoaAtual?: IPessoa | undefined;
-  private professor?: IProfessor | undefined;
+  public professor?: IProfessor | undefined;
   private aluno?: Aluno | undefined;
   public get pessoaAtual(): IPessoa | undefined {
     return this._pessoaAtual;
@@ -71,9 +67,19 @@ export class CadastroPessoaComponent implements OnInit {
     this.conhecimento.reset(this.professor?.conhecimentos);
     this.isProfessor = value instanceof Professor;
     this.condicaoReadOnly = true;
+    if (this.isProfessor) {
+      this.professor = this._pessoaAtual;
+    } else {
+      this.aluno = this._pessoaAtual;
+    }
   }
   condicaoRead() {
     return false;
+  }
+
+  load() {
+    (sessionStorage['refresh'] == 'true' || !sessionStorage['refresh']) && location.reload();
+    sessionStorage['refresh'] = false;
   }
 
   salvar() {
@@ -121,13 +127,27 @@ export class CadastroPessoaComponent implements OnInit {
       return pessoas;
     })
   }
+  excluirPessoa(pessoa: IPessoa) {
+    this.pessoasService.deletarPessoa(pessoa)
+      .subscribe({
+        next: () => {
+          this._snackBar.open("Alteração concluída com sucesso!", "Ok!", {
+            horizontalPosition: "right",
+            verticalPosition: "top",
+          })
+        }
+      })
+    setTimeout(() => {
+      this.getPessoas()
+    }, 1000);
+  }
+
   // getPessoasPorCpf () {
   //   this.pessoasService.getPorCpf(cpf).subscribe((pessoa: IPessoa) => {
   //     this.pessoaAtual = pessoa;
   //     return pessoa;
   //   })
   // }
-
   editarAluno(aluno: Aluno) {
     this.alunoService.alterarAluno(aluno)
       .subscribe({
@@ -151,15 +171,13 @@ export class CadastroPessoaComponent implements OnInit {
       })
   }
   adicionarConhecimentos() {
-    this.conhecimentos?.push(this.conhecimento.controls['conhecimento'].value);
+    this.professor?.conhecimentos?.push(this.conhecimento.controls['conhecimento'].value);
     this.conhecimento.reset();
   }
 
-  deletarConhecimento(conhecimento: String) {
-    const pos = this.conhecimentos?.indexOf(conhecimento);
-    if (pos && pos > -1) this.conhecimentos?.splice(pos, 1);
+  deletarConhecimento(conhecimento: string) {
+    const pos = this.professor?.conhecimentos?.indexOf(conhecimento);
+    if (pos && pos > -1) this.professor?.conhecimentos?.splice(pos, 1);
     this.conhecimento.reset();
   }
-
-
-  }
+}

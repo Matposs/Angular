@@ -24,12 +24,13 @@ export class CadastroAlunoComponent {
     dataNascimento: [, [Validators.required]],
     cpf: [, [Validators.required]],
     numeroMatricula: [, [Validators.required]],
-    endereco: {
-      uf: [, [Validators.required]],
-      logradouro: [, [Validators.required]],
-      numero: [, [Validators.required]],
-      municipio: [, [Validators.required]],
-    }
+  });
+
+  endereco: FormGroup = this.fb.group<any>({
+    uf: [, [Validators.required]],
+    logradouro: [, [Validators.required]],
+    numero: [, [Validators.required]],
+    municipio: [, [Validators.required]]
   });
 
   constructor(
@@ -39,27 +40,28 @@ export class CadastroAlunoComponent {
   }
   condicao: boolean = true;
   condicaoReadOnly?: boolean = false;
-  private _pessoaAtual?: IAluno | undefined;
+  private aluno?: IAluno | undefined;
   public get pessoaAtual(): IAluno | undefined {
-    return this._pessoaAtual;
+    return this.aluno;
   }
-  set pessoaAtual(value: IAluno | undefined) {
-    this._pessoaAtual = value;
-    this.form.reset(this._pessoaAtual);
+  set Aluno(value: IAluno | undefined) {
+    this.aluno = value;
+    this.form.reset(this.aluno);
     this.condicaoReadOnly = true;
+    this.endereco.reset(this.aluno?.endereco);
+  }
+  ngOnInit() {
+    this.novoCadastro();
   }
   salvar() {
-
-    if (this.pessoaAtual) {
-      Object.assign(this.pessoaAtual, this.form.getRawValue())
-      this._snackBar.open("Cadastro concluído com sucesso!", "Ok!", {
-        horizontalPosition: "right",
-        verticalPosition: "top",
-      });
-    }
-    else {
-      const pessoa = this.form.getRawValue();
-      this.alunoService.setAluno(pessoa).subscribe({
+    if (this.aluno) {
+      Object.assign(this.aluno, this.form.getRawValue());
+      if (this.aluno.endereco) {
+        Object.assign(this.aluno.endereco, this.endereco.getRawValue());
+      } else {
+        this.aluno.endereco = new Endereco(this.endereco.getRawValue());
+      }
+      this.alunoService.setAluno(this.aluno).subscribe({
         next: () => {
           this._snackBar.open("Cadastro concluído com sucesso!", "Ok!", {
             horizontalPosition: "right",
@@ -68,14 +70,11 @@ export class CadastroAlunoComponent {
         }
       })
     }
-    this.form.reset();
-    this.pessoaAtual = undefined;
-    this.condicao = false;
     this.router.navigate(["Cadastro"]);
   }
 
   novoCadastro() {
-    this.pessoaAtual = undefined;
+    this.aluno = new Aluno({ numeroMatricula: [] });
     this.form.reset();
     this.condicao = false;
   }
